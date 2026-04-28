@@ -2,6 +2,8 @@ INCLUDE Irvine32.inc
 INCLUDE GraphWin.inc
 
 .data
+wWidth DWORD 100
+wHeight DWORD 75
 maxXcoord DWORD 1920d
 maxYcoord DWORD 1080d
 xCoord DWORD ?
@@ -49,6 +51,10 @@ main PROC
 
 	; Get system time at start of window
 	; Display window
+	INVOKE CreateWindowEx, 0, ADDR testTitle, ADDR testText, MAIN_WINDOW_STYLE,
+	xCoord, yCoord, wWidth, wHeight, NULL, NULL, hInstance, NULL
+	
+	INVOKE ShowWindow, hInstance, 5
 	; On window close, get system time again
 	;	Score is proportional to difference in system time
 	; Add score to total score
