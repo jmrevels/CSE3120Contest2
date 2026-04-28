@@ -34,8 +34,6 @@ SYSTEMTIME ENDS
 
 main PROC
 	call Randomize
-	INVOKE MessageBox, hMainWnd, ADDR testText,
-		ADDR testTitle, MB_OK
 
 	; Start of gameplay loop
 	;	(Loop can be based on either a systemtime time limit or # of moles)
@@ -51,10 +49,25 @@ main PROC
 
 	; Get system time at start of window
 	; Display window
-	INVOKE CreateWindowEx, 0, ADDR testTitle, ADDR testText, MAIN_WINDOW_STYLE,
+	INVOKE GetModuleHandle, NULL
+	mov hInstance, eax
+
+	INVOKE CreateWindowEx, 0, ADDR testTitle, ADDR testText, 10C40000h,
 	xCoord, yCoord, wWidth, wHeight, NULL, NULL, hInstance, NULL
 	
-	INVOKE ShowWindow, hInstance, 5
+	mov hMainWnd, eax
+	INVOKE ShowWindow, hMainWnd, SW_SHOW
+	INVOKE UpdateWindow, hMainWnd
+	MessageLoop:
+	INVOKE GetMessage, ADDR msg, NULL,NULL,NULL
+
+	cmp eax, 0
+	je skip
+
+	INVOKE DispatchMessage, ADDR msg
+	jmp MessageLoop
+
+	skip:
 	; On window close, get system time again
 	;	Score is proportional to difference in system time
 	; Add score to total score
