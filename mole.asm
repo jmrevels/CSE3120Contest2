@@ -89,12 +89,12 @@ main PROC
 main ENDP
 
 WinProc PROC hWnd:DWORD, localMsg:DWORD, wParam:DWORD, lParam:DWORD
-	cmp eax, WM_LBUTTONDOWN
-	je winProcExit
+	cmp localMsg, WM_LBUTTONDOWN
+	jne WindowProc
+	mov localMsg, WM_CLOSE
+	WindowProc:
 	INVOKE DefWindowProc, hWnd, localMsg, wParam, lParam
-
-	winProcExit:
-	ret 0
+	ret
 WinProc ENDP
 
 END main
