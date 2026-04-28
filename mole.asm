@@ -1,3 +1,5 @@
+; All of the window handling code in this program used pg 490 of the textbook as an example
+
 INCLUDE Irvine32.inc
 INCLUDE GraphWin.inc
 
@@ -40,6 +42,7 @@ newTime SYSTEMTIME<>
 
 main PROC
 	call Randomize
+	mov ECX, 10 ; Mole Count
 
 	; Start of gameplay loop
 	;	(Loop can be based on either a systemtime time limit or # of moles)
@@ -100,10 +103,33 @@ main PROC
 	mov AX, newTime.wMilliseconds
 	sub scoreTmp, AX
 	add score, EAX
-	; Add score to total score
 	; Repeat loop if not out of time/moles
+	dec ECX
+	cmp ECX, 0
+	jbe GameEnd
+	jmp Game
+
+	GameEnd:
 	; Display score
-	; Display high score/save score to file if higher
+	mov AX, 'S'
+	CALL WriteChar
+	mov AX, 'c'
+	CALL WriteChar
+	mov AX, 'o'
+	CALL WriteChar
+	mov AX, 'r'
+	CALL WriteChar
+	mov AX, 'e'
+	CALL WriteChar
+	mov AX, ':'
+	CALL WriteChar
+	mov AX, ' '
+	CALL WriteChar
+	mov EAX, score
+	CALL WriteDec
+	mov AX, 10
+	CALL WriteChar
+	CALL ReadChar ; Waits for input before closing
 
 
 main ENDP
@@ -112,6 +138,7 @@ WinProc PROC hWnd:DWORD, localMsg:DWORD, wParam:DWORD, lParam:DWORD
 	cmp localMsg, WM_LBUTTONDOWN
 	jne WindowProc
 	mov localMsg, WM_CLOSE
+	INVOKE PostQuitMessage, 0
 	WindowProc:
 	INVOKE DefWindowProc, hWnd, localMsg, wParam, lParam
 	ret
