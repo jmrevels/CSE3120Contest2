@@ -62,7 +62,7 @@ main PROC
 
 	INVOKE RegisterClass, ADDR MainWin
 
-	INVOKE CreateWindowEx, 0, ADDR MainWin, ADDR testText, MAIN_WINDOW_STYLE OR WS_VISIBLE,
+	INVOKE CreateWindowEx, 0, ADDR testTitle, ADDR testText, MAIN_WINDOW_STYLE,
 	xCoord, yCoord, wWidth, wHeight, NULL, NULL, hInstance, NULL
 	
 	mov hMainWnd, eax
@@ -88,10 +88,10 @@ main PROC
 
 main ENDP
 
-WinProc PROC
+WinProc PROC hWnd:DWORD, localMsg:DWORD, wParam:DWORD, lParam:DWORD
 	cmp eax, WM_LBUTTONDOWN
 	je winProcExit
-	ret 1
+	INVOKE DefWindowProc, hWnd, localMsg, wParam, lParam
 
 	winProcExit:
 	ret 0
