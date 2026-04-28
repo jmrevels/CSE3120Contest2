@@ -6,6 +6,7 @@ INCLUDE GraphWin.inc
 .data
 wWidth DWORD 200
 wHeight DWORD 120
+; This program assumes it is being run on a 1920x1080 display, please adjust the following variables if otherwise
 maxXcoord DWORD 1520d
 maxYcoord DWORD 760d
 xCoord DWORD ?
@@ -15,10 +16,10 @@ score DWORD 0
 scoreTmp WORD ?
 moleCount DWORD 10
 
-testText BYTE "test",0
-testTitle BYTE "title",0
+windowText BYTE "Mole",0
+windowTitle BYTE "Whack",0
 
-MainWin WNDCLASS <NULL,WinProc,NULL,NULL,NULL,NULL,NULL,COLOR_WINDOW,NULL,testTitle>
+MainWin WNDCLASS <NULL,WinProc,NULL,NULL,NULL,NULL,NULL,COLOR_WINDOW,NULL,windowTitle>
 
 msg	      MSGStruct <>
 winRect   RECT <>
@@ -71,7 +72,7 @@ main PROC
 
 	INVOKE RegisterClass, ADDR MainWin
 
-	INVOKE CreateWindowEx, 0, ADDR testTitle, ADDR testText, WS_CAPTION,
+	INVOKE CreateWindowEx, 0, ADDR windowTitle, ADDR windowText, WS_CAPTION,
 	xCoord, yCoord, wWidth, wHeight, NULL, NULL, hInstance, NULL
 	
 	mov hMainWnd, eax
