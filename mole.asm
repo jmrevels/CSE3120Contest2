@@ -14,6 +14,8 @@ score WORD 0
 testText BYTE "test",0
 testTitle BYTE "title",0
 
+MainWin WNDCLASS <NULL,WinProc,NULL,NULL,NULL,NULL,NULL,COLOR_WINDOW,NULL,testTitle>
+
 msg	      MSGStruct <>
 winRect   RECT <>
 hMainWnd  DWORD ?
@@ -77,5 +79,14 @@ main PROC
 
 
 main ENDP
+
+WinProc PROC
+	cmp eax, WM_LBUTTONDOWN
+	je winProcExit
+	ret 1
+
+	winProcExit:
+	ret 0
+WinProc ENDP
 
 END main
