@@ -53,8 +53,16 @@ main PROC
 	; Display window
 	INVOKE GetModuleHandle, NULL
 	mov hInstance, eax
+	mov MainWin.hInstance, eax
 
-	INVOKE CreateWindowEx, 0, ADDR testTitle, ADDR testText, 10C40000h,
+	INVOKE LoadIcon, NULL, IDI_APPLICATION
+	mov MainWin.hIcon, eax
+	INVOKE LoadCursor, NULL, IDC_ARROW
+	mov MainWin.hCursor, eax
+
+	INVOKE RegisterClass, ADDR MainWin
+
+	INVOKE CreateWindowEx, 0, ADDR MainWin, ADDR testText, MAIN_WINDOW_STYLE OR WS_VISIBLE,
 	xCoord, yCoord, wWidth, wHeight, NULL, NULL, hInstance, NULL
 	
 	mov hMainWnd, eax
