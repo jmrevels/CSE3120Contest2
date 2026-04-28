@@ -4,10 +4,10 @@ INCLUDE Irvine32.inc
 INCLUDE GraphWin.inc
 
 .data
-wWidth DWORD 100
-wHeight DWORD 75
-maxXcoord DWORD 1920d
-maxYcoord DWORD 1080d
+wWidth DWORD 200
+wHeight DWORD 120
+maxXcoord DWORD 1520d
+maxYcoord DWORD 760d
 xCoord DWORD ?
 yCoord DWORD ?
 
@@ -70,7 +70,7 @@ main PROC
 
 	INVOKE RegisterClass, ADDR MainWin
 
-	INVOKE CreateWindowEx, 0, ADDR testTitle, ADDR testText, MAIN_WINDOW_STYLE,
+	INVOKE CreateWindowEx, 0, ADDR testTitle, ADDR testText, WS_CAPTION,
 	xCoord, yCoord, wWidth, wHeight, NULL, NULL, hInstance, NULL
 	
 	mov hMainWnd, eax
