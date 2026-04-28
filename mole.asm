@@ -13,6 +13,7 @@ yCoord DWORD ?
 
 score DWORD 0
 scoreTmp WORD ?
+moleCount DWORD 10
 
 testText BYTE "test",0
 testTitle BYTE "title",0
@@ -42,7 +43,7 @@ newTime SYSTEMTIME<>
 
 main PROC
 	call Randomize
-	mov ECX, 10 ; Mole Count
+	; mov ECX, moleCount ; Mole Count
 
 	; Start of gameplay loop
 	;	(Loop can be based on either a systemtime time limit or # of moles)
@@ -104,9 +105,13 @@ main PROC
 	sub scoreTmp, AX
 	add score, EAX
 	; Repeat loop if not out of time/moles
+	push ECX
+	mov ECX, moleCount
 	dec ECX
+	mov moleCount, ECX
 	cmp ECX, 0
 	jbe GameEnd
+	pop ECX
 	jmp Game
 
 	GameEnd:
