@@ -9,7 +9,8 @@ maxYcoord DWORD 1080d
 xCoord DWORD ?
 yCoord DWORD ?
 
-score WORD 0
+score DWORD 0
+scoreTmp DWORD ?
 
 testText BYTE "test",0
 testTitle BYTE "title",0
@@ -32,6 +33,9 @@ SYSTEMTIME STRUCT
 	wMilliseconds	WORD ?
 SYSTEMTIME ENDS
 
+oldTime SYSTEMTIME<>
+newTime SYSTEMTIME<>
+
 .code
 
 main PROC
@@ -50,6 +54,7 @@ main PROC
 	mov yCoord, eax
 
 	; Get system time at start of window
+	INVOKE GetLocalTime, oldTime
 	; Display window
 	INVOKE GetModuleHandle, NULL
 	mov hInstance, eax
@@ -79,7 +84,17 @@ main PROC
 
 	skip:
 	; On window close, get system time again
+	INVOKE GetLocalTime, newTime
 	;	Score is proportional to difference in system time
+	sub newTime.wSecond, oldTime.wSecond
+	mov scoreTmp, EAX
+	mul AX, 1000d
+	mov scoreTmp, EAX
+	add scoreTmp, oldTime.wMilliseconds
+	mov scoreTmp, EAX
+	sub scoreTmp, newTime.wMilliseconds
+	mov scoreTmp, EAX
+	add score, scoreTmp
 	; Add score to total score
 	; Repeat loop if not out of time/moles
 	; Display score
