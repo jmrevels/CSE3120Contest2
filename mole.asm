@@ -14,7 +14,7 @@ yCoord DWORD ?
 
 score DWORD 0
 scoreTmp WORD ?
-moleCount DWORD 10
+moleCount DWORD 15
 
 windowText BYTE "Mole",0
 windowTitle BYTE "Whack",0
